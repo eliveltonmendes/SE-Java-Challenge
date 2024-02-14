@@ -24,4 +24,16 @@ public class Friend {
 
     @Column(name = "phone_number", nullable = false)
     private long phoneNumber;
+
+    public Friend() {}
+    public Friend(String firstName, String lastName, String email, long phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

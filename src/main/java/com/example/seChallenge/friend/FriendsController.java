@@ -1,7 +1,6 @@
 package com.example.seChallenge.friend;
 
 import com.example.seChallenge.domain.Friend;
-import com.example.seChallenge.friend.FriendsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
