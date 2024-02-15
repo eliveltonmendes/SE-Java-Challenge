@@ -25,9 +25,6 @@ public class Invoice {
     @Column(name = "percentage_fee", nullable = false)
     private long percentageFee;
 
-    // @Column(name = "total_value")
-    // private Double totalValue;
-
     @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER)
     private List<InvoiceDetail> invoiceDetails;
 
@@ -41,13 +38,9 @@ public class Invoice {
 
     public BigDecimal getTotalOrderByFriendId(long friendId) {
 
-        System.out.println("filtering by friend " + friendId);
         BigDecimal totalOrderValue = new BigDecimal(0);
         for (InvoiceDetail detail: invoiceDetails) {
-            System.out.println("filtering by friend " + friendId + " to " + detail.getFriendId());
             if (detail.getFriendId() != friendId) continue;
-
-            System.out.println("Entered");
             totalOrderValue = totalOrderValue.add(new BigDecimal(detail.getPrice())).setScale(2, RoundingMode.HALF_UP);
         }
         return totalOrderValue;

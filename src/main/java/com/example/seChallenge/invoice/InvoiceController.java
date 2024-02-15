@@ -23,7 +23,7 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @PostMapping()
-    public OrderResponseDTO[] calculateFoodPayment(@RequestBody Invoice order) {
+    public OrderResponseDTO[] calculateFoodPayment(@RequestBody Invoice order) throws Exception {
         return invoiceService.calculateFoodPayment(order);
     }
 

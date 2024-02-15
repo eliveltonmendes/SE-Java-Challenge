@@ -17,6 +17,7 @@ import com.example.seChallenge.domain.InvoiceDetail;
 import com.example.seChallenge.domain.Transaction;
 import com.example.seChallenge.friend.FriendsService;
 import com.example.seChallenge.invoice.dto.OrderResponseDTO;
+import com.example.seChallenge.payment.PaymentServiceFactory;
 import com.example.seChallenge.repository.InvoiceRepository;
 import com.example.seChallenge.repository.TransactionRepository;
 import com.example.seChallenge.repository.InvoiceDetailRepository;
@@ -34,7 +35,10 @@ public class InvoiceService {
     @Autowired
     private FriendsService friendsService;
 
-   public OrderResponseDTO[] calculateFoodPayment(Invoice invoice) {
+    @Autowired
+    private PaymentServiceFactory paymentServiceFactory;
+
+    public OrderResponseDTO[] calculateFoodPayment(Invoice invoice) throws Exception {
         this.invoiceRepository.save(invoice);
 
         for (InvoiceDetail detail : invoice.getInvoiceDetails()) {
@@ -69,8 +73,9 @@ public class InvoiceService {
             response.calculateFee(new BigDecimal(invoice.getDeliveryFee()), invoice.getPercentageFee());
 
             Transaction transaction = new Transaction(invoice, response.getFriend(), response.getTotalPaymentValue());
-
-            //todo - payment link
+            String link = paymentServiceFactory.getService("PIC_PAY").processPayment(transaction);
+            transaction.setPaymentLink(link);
+            response.setPaymentLink(link);
             this.transactionRepository.save(transaction);
         }
 
